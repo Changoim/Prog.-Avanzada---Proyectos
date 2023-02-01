@@ -26,10 +26,9 @@ struct cliente
     double MasaCorporal;
     char genero;
     string correo;
-    long int movil;
+    long long int movil;
     int cHijos;
     string direccion;
-
 };
 
 main ()
@@ -48,7 +47,7 @@ main ()
         cin>>clientes[i].ID;
         cout<<"Ingrese su masa corporal"<<endl;
         cin>>clientes[i].MasaCorporal;
-        cout<<"Ingrese su genero (F/M)"<<endl;
+        cout<<"Ingrese su genero (f/m)"<<endl;
         cin>>clientes[i].genero;
         cout<<"Ingrese su correo"<<endl;
         cin>>clientes[i].correo;
@@ -64,19 +63,24 @@ main ()
         cout<<"edad: "<<clientes[i].edad<<endl;
         cout<<"identificacion: "<<clientes[i].ID<<endl;
         cout<<"Masa corporal: "<<clientes[i].MasaCorporal<<"kg"<<endl;
-        cout<<"Genero: "<<clientes[i].genero<<endl;
+        if (clientes[i].genero== 'f')
+        {
+            cout<<"Genero: femenino"<<endl;
+        }
+        else if (clientes[i].genero== 'm')
+        {
+            cout<<"Genero: masculino"<<endl;
+        }
         cout<<"correo: "<<clientes[i].correo<<endl;
         cout<<"movil: "<<clientes[i].movil<<endl;
         cout<<"cantidad de hijos: "<<clientes[i].cHijos<<endl;
         cout<<"direccion: "<<clientes[i].direccion<<endl;
         i++;
 
-        cout<<"Desea ingresar otro cliente?"<<endl;
+        cout<<"Desea ingresar otro cliente? s/n"<<endl;
         cin>>op;
-
     }
-
+    
     cout<<"numero de clientes: "<<i;
-
-
 }
+
