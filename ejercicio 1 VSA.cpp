@@ -7,7 +7,7 @@
  solicitar el numero de usuarios a registrar inicialmente. Se debe solicitar la mayor
  cantidad de datos posibles, para ser usados posteriormente. De ser necesario, se
  recomienda preguntar datos adicionales sobre sus hijos (nombre, edad, entre otros,
- adicional). Se necesita que al final de la ejecución, se presente el nombre de los 10
+ adicional). Se necesita que al final de la ejecuciÃ³n, se presente el nombre de los 10
  usuarios registrados satisfactoriamente.
   Tipo de datos
  solucion:
