@@ -26,7 +26,7 @@ struct datos_usuarios
 
 
 //se crea una lista, como conjunto de palabras disponibles para jugar
-const string lista_palabras[] = {"hola","mañana","hoy","tarde","noche"};
+const string lista_palabras[] = {"hola","maÃ±ana","hoy","tarde","noche"};
 
 //se crea la funcion principal
 int main ()
@@ -37,7 +37,7 @@ int main ()
     //se pude cuantos usuarios
     cout<<"ingrese el numro de usuarios que va a registrar"<<endl;
     cin>>cantidad;
-    //se crea un objeto struct del tamaño cantidad
+    //se crea un objeto struct del tamaÃ±o cantidad
     datos_usuarios personas[cantidad];
 
     //se piden los datos de los usuarios
