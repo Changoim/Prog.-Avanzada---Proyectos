@@ -5,7 +5,7 @@ Proyecto #1: Programacion avanzada
 
 La empresa Minosaurios Tech solicita el registro de sus empleados.
 La estructura de datos empleado:
-        - Código númerico
+        - CÃ³digo nÃºmerico
         - Nombres
         - Apellidos
         - Celular
@@ -15,7 +15,7 @@ Funciones
         - Agregar nuevos empleados: se verifica que el empleado no este, la informacion se adiciona al final del fichero
         - Mostrar los empleados registrados: se imprime en pantalla los empleados en orden alfabetico
         - Cambiar el numero de movil del empleado: con el codigo del empleado, si existe, se modifica
-        - Despedir empleado: con el código, si existe, se elimina del binario. Se genera una carta de despido.txt
+        - Despedir empleado: con el cÃ³digo, si existe, se elimina del binario. Se genera una carta de despido.txt
         - Mostrar empleados que han sido despedidos: se presenta un vector con los empleados despedidos
 
 */
@@ -51,7 +51,7 @@ int registro(empleado empleados[], int totalclientes)
     for(int i=0; i<totalclientes; i++)
     {
         cout<<"\n-----Cliente #"<<i+1<<"-----\n"<<endl;
-        cout<<"Código: ";
+        cout<<"CÃ³digo: ";
         cin>>empleados[i].codigo;
         cout<<"Nombre: ";
         cin>>empleados[i].nombres;
@@ -61,7 +61,7 @@ int registro(empleado empleados[], int totalclientes)
         cin>>empleados[i].celular;
     }
 
-    //se abre el fichero para añadir datos al final
+    //se abre el fichero para aÃ±adir datos al final
     f.open("empleados.bin", ios::binary);
     if (!f.is_open())
     {
@@ -72,7 +72,7 @@ int registro(empleado empleados[], int totalclientes)
     for(int i=0; i<totalclientes; i++)
     {
         f<<"\n-----Cliente #"<<i+1<<"-----\n"<<endl;
-        f<<"Código: ";
+        f<<"CÃ³digo: ";
         f<<empleados[i].codigo<<endl;
         f<<"Nombre: ";
         f<<empleados[i].nombres<<endl;
@@ -94,7 +94,7 @@ int registro(empleado empleados[], int totalclientes)
             for(int j=0; j<totalclientes; j++)
             {
                 cout<<"\n-----Cliente #"<<j+1<<"-----\n"<<endl;
-                cout<<"Código: ";
+                cout<<"CÃ³digo: ";
                 cout<<empleados[j].codigo<<endl;
                 cout<<"Nombre: ";
                 cout<<empleados[j].nombres<<endl;
@@ -125,7 +125,7 @@ empleado agregar(empleado empleados[], int totalclientes)
     for(int i=totalclientes; i<total; i++)
     {
         cout<<"\n-----Cliente #"<<i+1<<"-----\n"<<endl;
-        cout<<"Código: ";
+        cout<<"CÃ³digo: ";
         cin>>empleados[i].codigo;
         cout<<"Nombre: ";
         cin>>empleados[i].nombres;
@@ -140,7 +140,7 @@ empleado agregar(empleado empleados[], int totalclientes)
     char resp;
     int conta = 0;
 
-    //se abre el fichero para añadir datos al final
+    //se abre el fichero para aÃ±adir datos al final
     f.open("empleados.bin", ios::out|ios::app|ios::binary);
     if (f.fail())
     {
@@ -151,7 +151,7 @@ empleado agregar(empleado empleados[], int totalclientes)
     for(int i=totalclientes; i<total; i++)
     {
         f<<"\n-----Cliente #"<<i+1<<"-----\n"<<endl;
-        f<<"Código: ";
+        f<<"CÃ³digo: ";
         f<<empleados[i].codigo<<endl;
         f<<"Nombre: ";
         f<<empleados[i].nombres<<endl;
@@ -183,7 +183,7 @@ empleado agregar(empleado empleados[], int totalclientes)
             {
 
                 cout<<"\n-----Cliente #"<<j+1<<"-----\n"<<endl;
-                cout<<"Código: ";
+                cout<<"CÃ³digo: ";
                 cout<<empleados[j].codigo<<endl;
                 cout<<"Nombre: ";
                 cout<<empleados[j].nombres<<endl;
@@ -220,7 +220,7 @@ void registrados(empleado empleados[], int totalclientes)
     for (int v=0; v<totalclientes; v++)
     {
         cout<<"\n-----Cliente #"<<v+1<<"-----\n"<<endl;
-        cout<<"Código: ";
+        cout<<"CÃ³digo: ";
         cout<<empleados[v].codigo<<endl;
         cout<<"Nombre: ";
         cout<<empleados[v].nombres<<endl;
@@ -276,7 +276,7 @@ void despedirempleado(empleado empleados[], int totalclientes)
     cin>>dia;
     cout<<"mes: ";
     cin>>mes;
-    cout<<"año: ";
+    cout<<"aÃ±o: ";
     cin>>anio;
 
     for(int i=0; i<totalclientes; i++)
@@ -298,14 +298,14 @@ void despedirempleado(empleado empleados[], int totalclientes)
             {
                 file<<"                                                                       "<<dia<<"/"<<mes<<"/"<<anio<<endl;
                 file<<"Apreciado(a) "<<persona<<":"<<endl;
-                file<<"\t El motivo de esta carta es comunicarte que, el día de hoy, la empresa Minosaurios Tech Inc. ha\t"<<endl;
-                file<<"\ttomado la decisión de prescindir de tus servicios laborales como redactor web, puesto en el cual te has desempeñado desde el 3 de mayo de 2020.\t"<<endl;
-                file<<"\tEl efecto del despido se llevará a cabo el día 31 de agosto del presente.\t"<<endl;
-                file<<"\tLas razones de esta decisión se deben a los resultados de desempeño obtenidos en el periodo mayo-agosto de 2020.\t"<<endl;
-                file<<"\tDe acuerdo a lo especificado en el contrato de trabajo, durante los primeros tres meses de la relación laboral, el colaborador debía de producir 10 piezas escritas con un alcance de 20.000 lectores.\t"<<endl;
-                file<<"\tNo obstante, estos objetivos no fueron cumplidos en el periodo determinado y, de acuerdo con lo establecido en el artículo 52 del Estatuto de los Trabajadores, la empresa tiene la libertad de extinguir el contrato.\t"<<endl;
-                file<<"\tConforme a lo acordado en el artículo 53 del Estatuto de los Trabajadores, la empresa pondrá a tu disposición la parte correspondiente de los 20 días de salario por cada año trabajado,\t"<<endl;
-                file<<"\tel cual asciende a una cantidad de €XXXX.XX.\t"<<endl;
+                file<<"\t El motivo de esta carta es comunicarte que, el dÃ­a de hoy, la empresa Minosaurios Tech Inc. ha\t"<<endl;
+                file<<"\ttomado la decisiÃ³n de prescindir de tus servicios laborales como redactor web, puesto en el cual te has desempeÃ±ado desde el 3 de mayo de 2020.\t"<<endl;
+                file<<"\tEl efecto del despido se llevarÃ¡ a cabo el dÃ­a 31 de agosto del presente.\t"<<endl;
+                file<<"\tLas razones de esta decisiÃ³n se deben a los resultados de desempeÃ±o obtenidos en el periodo mayo-agosto de 2020.\t"<<endl;
+                file<<"\tDe acuerdo a lo especificado en el contrato de trabajo, durante los primeros tres meses de la relaciÃ³n laboral, el colaborador debÃ­a de producir 10 piezas escritas con un alcance de 20.000 lectores.\t"<<endl;
+                file<<"\tNo obstante, estos objetivos no fueron cumplidos en el periodo determinado y, de acuerdo con lo establecido en el artÃ­culo 52 del Estatuto de los Trabajadores, la empresa tiene la libertad de extinguir el contrato.\t"<<endl;
+                file<<"\tConforme a lo acordado en el artÃ­culo 53 del Estatuto de los Trabajadores, la empresa pondrÃ¡ a tu disposiciÃ³n la parte correspondiente de los 20 dÃ­as de salario por cada aÃ±o trabajado,\t"<<endl;
+                file<<"\tel cual asciende a una cantidad de Â€XXXX.XX.\t"<<endl;
                 file<<endl;
                 file<<endl;
                 file<<"Saludos cordiales,"<<endl;
@@ -327,12 +327,12 @@ main()
     cout<<"\n----------BIENVENIDO A MINOSAURIOS TECH----------\n"<<endl;
     do
     {
-        cout<<"MENÚ"<<endl;
-        cout<<"¿Que desea hacer el dia de hoy?"<<endl;
+        cout<<"MENÃš"<<endl;
+        cout<<"Â¿Que desea hacer el dia de hoy?"<<endl;
         cout<<"Registrar empleados.(ingrese 1)"<<endl;
         cout<<"Agregar nuevos empleados.(ingrese 2)"<<endl;
         cout<<"Mostrar los empleados registrados.(ingrese 3"<<endl;
-        cout<<"Cambiar el número de celular de un empleado.(ingrese 4)"<<endl;
+        cout<<"Cambiar el nÃºmero de celular de un empleado.(ingrese 4)"<<endl;
         cout<<"Despedir a un empleado.(ingrese 5)"<<endl;
         cout<<"Mostrar empleados que han sido despedidos.(ingrese 6)"<<endl;
         cout<<"Ingrese la cantidad de clientes que va a registrar"<<endl;
