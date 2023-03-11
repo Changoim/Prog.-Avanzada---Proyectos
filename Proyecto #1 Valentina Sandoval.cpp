@@ -3,14 +3,14 @@ Autor: Valentina Sandoval Aparicio
 Fecha: 01/03/2023
 Proyecto #1: Programacion avanzada
 
-La empresa Minosaurios Tech solicita el registro de sus empleados.
-La estructura de datos empleado:
+    La empresa Minosaurios Tech solicita el registro de sus empleados.
+    La estructura de datos empleado:
         - Código númerico
         - Nombres
         - Apellidos
         - Celular
 
-Funciones
+    Funciones
         - Registrar empleados: se debe almacenar en un fichero binario "Empleados.bin"
         - Agregar nuevos empleados: se verifica que el empleado no este, la informacion se adiciona al final del fichero
         - Mostrar los empleados registrados: se imprime en pantalla los empleados en orden alfabetico
@@ -25,6 +25,8 @@ Funciones
 #include<stdio.h>
 #include<conio.h>
 #include<stdlib.h>
+#include <vector>
+#include <cstring>
 
 using namespace std;
 int const MAX = 100;
@@ -40,13 +42,14 @@ struct empleado
 int registro(empleado empleados[], int totalclientes)
 {
     empleados[totalclientes];
+    cout<<"Ingrese la cantidad de clientes que va a registrar"<<endl;
+    cin>>totalclientes;
 
     cout<<"Ahora ingrese la informacion de cada cliente"<<endl;
 
     ofstream f;
     ifstream in;
     char resp;
-    int conta = 0;
 
     for(int i=0; i<totalclientes; i++)
     {
@@ -68,24 +71,12 @@ int registro(empleado empleados[], int totalclientes)
         cout << "Error al crear el fichero empleados.bin" << endl;
     }
 
-    // Entrada de datos
-    for(int i=0; i<totalclientes; i++)
-    {
-        f<<"\n-----Cliente #"<<i+1<<"-----\n"<<endl;
-        f<<"Código: ";
-        f<<empleados[i].codigo<<endl;
-        f<<"Nombre: ";
-        f<<empleados[i].nombres<<endl;
-        f<<"apellidos: ";
-        f<<empleados[i].apellidos<<endl;
-        f<<"celular: ";
-        f<<empleados[i].celular<<endl;;
-    }
-
-    cin.clear();
+    f.write(reinterpret_cast<char*>(&empleados),sizeof(empleado));
     f.close();
 
-    cout << "Mostrar empleados(S/N)? ";
+    cout<<"empleado(s) registrado!"<<endl;
+
+    cout<<"Mostrar empleados(S/N)? ";
     cin>>resp;
 
     if (resp == 's')
@@ -109,59 +100,62 @@ int registro(empleado empleados[], int totalclientes)
     return totalclientes;
 }
 
-empleado agregar(empleado empleados[], int totalclientes)
+int agregar(empleado empleados[], int totalclientes)
 {
-    cin>>totalclientes;
-    empleados[500];
-
     int clientesagregar;
-    cout<<"Ingrese la cantidad de clientes que va a registrar"<<endl;
+    cout<<"Ingrese la cantidad de clientes que va a agregar"<<endl;
     cin>>clientesagregar;
-
-    int total=totalclientes+clientesagregar;
+    int aux=totalclientes;
+    totalclientes = totalclientes + clientesagregar;
+    string nombreagregar;
+    int codigoagregar;
+    bool encontrado = false;
 
     cout<<"Ahora ingrese la informacion de cada cliente"<<endl;
 
-    for(int i=totalclientes; i<total; i++)
+    for(int i=aux; i<totalclientes; i++)
     {
         cout<<"\n-----Cliente #"<<i+1<<"-----\n"<<endl;
         cout<<"Código: ";
-        cin>>empleados[i].codigo;
+        cin>>codigoagregar;
         cout<<"Nombre: ";
-        cin>>empleados[i].nombres;
-        cout<<"apellidos: ";
-        cin>>empleados[i].apellidos;
-        cout<<"celular: ";
-        cin>>empleados[i].celular;
-    }
+        cin>>nombreagregar;
+        for (int p=0; p<aux; p++)
+        {
+            if(empleados[p].codigo!=codigoagregar && empleados[p].nombres!=nombreagregar)
+            {
+                encontrado = true;
 
+            }
+        }
+        if (encontrado)
+        {
+            empleados[i].codigo = codigoagregar;
+            empleados[i].nombres = nombreagregar;
+            cout<<"apellidos: ";
+            cin>>empleados[i].apellidos;
+            cout<<"celular: ";
+            cin>>empleados[i].celular;
+        }
+        else
+        {
+            cout<<"el empleado ya ha sido registrado previamente, no se puede agregar"<<endl;
+            totalclientes--;
+        }
+    }
     ofstream f;
     ifstream in;
     char resp;
     int conta = 0;
 
     //se abre el fichero para añadir datos al final
-    f.open("empleados.bin", ios::out|ios::app|ios::binary);
+    f.open("empleados.bin", ios::app|ios::binary);
     if (f.fail())
     {
-        cout << "Error al crear el fichero empleados.dat" << endl;
+        cout << "Error al crear el fichero empleados.bin" << endl;
     }
 
-    // Entrada de datos
-    for(int i=totalclientes; i<total; i++)
-    {
-        f<<"\n-----Cliente #"<<i+1<<"-----\n"<<endl;
-        f<<"Código: ";
-        f<<empleados[i].codigo<<endl;
-        f<<"Nombre: ";
-        f<<empleados[i].nombres<<endl;
-        f<<"apellidos: ";
-        f<<empleados[i].apellidos<<endl;
-        f<<"celular: ";
-        f<<empleados[i].celular<<endl;
-    }
-
-    cin.clear();
+    f.write(reinterpret_cast<char*>(&empleados),sizeof(empleado));
     f.close();
 
     cout << "Mostrar empleados(S/N)? ";
@@ -172,14 +166,14 @@ empleado agregar(empleado empleados[], int totalclientes)
         in.open("empleados.bin", ios::binary);
         if(in.fail())
         {
-            cout << "Error al abrir el fichero empleados.dat" << endl;
+            cout << "Error al abrir el fichero empleados.bin" << endl;
             system("pause");
             exit(1);
         }
         // Leemos el primer registro
         in.open("empleados.bin");
         {
-            for(int j=0; j<total; j++)
+            for(int j=0; j<totalclientes; j++)
             {
 
                 cout<<"\n-----Cliente #"<<j+1<<"-----\n"<<endl;
@@ -197,6 +191,7 @@ empleado agregar(empleado empleados[], int totalclientes)
         in.close(); // Cerramos el fichero
 
     }
+    return totalclientes;
 }
 
 void registrados(empleado empleados[], int totalclientes)
@@ -234,40 +229,66 @@ void registrados(empleado empleados[], int totalclientes)
 
 void cambiarnumero(empleado empleados[], int totalclientes)
 {
-    long int num;
-    string nom;
-
-    cout<<"ingrese el nombre del empleado al que va a modificar el numero telefonico"<<endl;
-    cin>>nom;
-
+    long int nuevoTelefono;
     for(int i=0; i<totalclientes; i++)
     {
-        if (empleados[i].nombres == nom)
+        int existe=0;
+        // Abrir archivo binario para lectura y escritura
+        fstream archivo("empleados.bin", ios::in | ios::out | ios::binary);
+
+        if (!archivo)
         {
-            cout<<"ingrese el nuevo numero telefonico"<<endl;
-            cin>>num;
-
-            empleados[i].celular = num;
-            ofstream f;
-            f.open("CartaDespido.txt");
-            if (f.fail())
-            {
-                cout << "Error al crear el fichero carta de despido" << endl;
-            }
-
-            f<<empleados[i].celular<<endl;
-            cin.clear();
-            f.close();
-
+            cerr << "Error al abrir el archivo." << endl;
         }
+
+        // Pedir el código del empleado a modificar
+        int codigo;
+        cout<<"Ingrese el código del empleado a modificar: ";
+        cin>>codigo;
+
+        // Buscar el empleado en el archivo
+        bool encontrado = false;
+
+        while (!encontrado && archivo.read((char*)&empleados, sizeof(empleado)))
+        {
+            if (empleados[i].codigo == codigo)
+            {
+                encontrado = true;
+            }
+        }
+
+        // Si se encontró al empleado, pedir el nuevo número de teléfono y modificarlo en el archivo
+        if (encontrado)
+        {
+            cout<<"Ingrese el nuevo número de teléfono: ";
+            cin>>nuevoTelefono;
+            // Regresar al inicio del registro encontrado
+            archivo.seekp(-sizeof(empleado), ios::cur);
+
+            archivo.write((char*)&empleados, sizeof(empleado));
+            printf("Se modifico el precio para dicho producto.\n");
+            existe=1;
+             empleados[i].celular = nuevoTelefono;
+            break;
+        }
+        archivo.read((char*)&empleados, sizeof(empleado));
+
+        if (existe==0)
+            printf("No existe el empleado con dicho codigo\n");
+        archivo.close();
+
+
+        cout << "El número de teléfono se ha modificado correctamente." << endl;
     }
+
 }
-void despedirempleado(empleado empleados[], int totalclientes)
+
+int despedirempleado(empleado empleados[], int totalclientes, string *despedidos, int contador)
 {
     int codigo;
-    int contador;
+    int j=0;
 
-    cout<<"ingrese el codigo del empleado al que va a modificar el numero telefonico"<<endl;
+    cout<<"ingrese el codigo del empleado al que va a despedir"<<endl;
     cin>>codigo;
 
     int dia, mes, anio;
@@ -281,7 +302,6 @@ void despedirempleado(empleado empleados[], int totalclientes)
 
     for(int i=0; i<totalclientes; i++)
     {
-        cout<<"AAAAAAAAA"<<endl;
         if (empleados[i].codigo == codigo)
         {
             ofstream file;
@@ -296,27 +316,45 @@ void despedirempleado(empleado empleados[], int totalclientes)
             file.open(newS);
             if(file.is_open())
             {
-                file<<"                                                                       "<<dia<<"/"<<mes<<"/"<<anio<<endl;
+                file<<"-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"<<endl;
+                file<<"                                                                                                                                     "<<dia<<"/"<<mes<<"/"<<anio<<endl;
                 file<<"Apreciado(a) "<<persona<<":"<<endl;
                 file<<"\t El motivo de esta carta es comunicarte que, el día de hoy, la empresa Minosaurios Tech Inc. ha\t"<<endl;
-                file<<"\ttomado la decisión de prescindir de tus servicios laborales como redactor web, puesto en el cual te has desempeñado desde el 3 de mayo de 2020.\t"<<endl;
-                file<<"\tEl efecto del despido se llevará a cabo el día 31 de agosto del presente.\t"<<endl;
-                file<<"\tLas razones de esta decisión se deben a los resultados de desempeño obtenidos en el periodo mayo-agosto de 2020.\t"<<endl;
-                file<<"\tDe acuerdo a lo especificado en el contrato de trabajo, durante los primeros tres meses de la relación laboral, el colaborador debía de producir 10 piezas escritas con un alcance de 20.000 lectores.\t"<<endl;
-                file<<"\tNo obstante, estos objetivos no fueron cumplidos en el periodo determinado y, de acuerdo con lo establecido en el artículo 52 del Estatuto de los Trabajadores, la empresa tiene la libertad de extinguir el contrato.\t"<<endl;
-                file<<"\tConforme a lo acordado en el artículo 53 del Estatuto de los Trabajadores, la empresa pondrá a tu disposición la parte correspondiente de los 20 días de salario por cada año trabajado,\t"<<endl;
-                file<<"\tel cual asciende a una cantidad de XXXX.XX.\t"<<endl;
+                file<<"\t tomado la decisión de prescindir de tus servicios laborales como redactor web, puesto en el cual te has desempeñado desde el 3 de mayo de 2020.\t"<<endl;
+                file<<"\t El efecto del despido se llevará a cabo el día "<<dia<<" de mes " << mes<< " del presente.\t"<<endl;
+                file<<"\t Las razones de esta decisión se deben a los resultados de desempeño obtenidos en el periodo mayo-agosto de 2022.\t"<<endl;
+                file<<"\t De acuerdo a lo especificado en el contrato de trabajo, durante los primeros tres meses de la relación laboral, el colaborador debía de producir 10 piezas escritas con un alcance de 20.000 lectores.\t"<<endl;
+                file<<"\t No obstante, estos objetivos no fueron cumplidos en el periodo determinado y, de acuerdo con lo establecido en el artículo 52 del Estatuto de los Trabajadores, la empresa tiene la libertad de extinguir el contrato.\t"<<endl;
+                file<<"\t Conforme a lo acordado en el artículo 53 del Estatuto de los Trabajadores, la empresa pondrá a tu disposición la parte correspondiente de los 20 días de salario por cada año trabajado,\t"<<endl;
+                file<<"\t el cual asciende a una cantidad de €XXXX.XX.\t"<<endl;
                 file<<endl;
                 file<<endl;
                 file<<"Saludos cordiales,"<<endl;
                 file<<"Minosaurios Tech Inc."<<endl;
+                file<<"-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"<<endl;
             }
+
+            j++;
+
+            cout<<"Carta de despido creada"<<endl;
+
         }
-        else
-            cout<<"empleado no encontrao"<<endl;
+        //  else
+        //    cout<<"empleado no encontrado"<<endl;
+    }
+    contador =j;
+    cout<<"a"<<endl;
+    return contador;
+}
+
+void verdespedidos(empleado empleados[], int totalclientes, string *despedidos, int contador)
+{
+    cout<<"empleados despedidos: "<<endl;
+    for (int j=0; j<contador; j++)
+    {
+        cout<<"\t"<<despedidos[j]<<endl;
     }
 }
-void despedidos();
 
 main()
 {
@@ -324,19 +362,20 @@ main()
     char op;
     empleado empleados[MAX];
     int totalclientes;
+    string *despedidos;
+    int contador = 0;
+    despedidos = new string [contador];
     cout<<"\n----------BIENVENIDO A MINOSAURIOS TECH----------\n"<<endl;
     do
     {
-        cout<<"MENÚ"<<endl;
-        cout<<"¿Que desea hacer el dia de hoy?"<<endl;
+        cout<<"MENU"<<endl;
+        cout<<"Que desea hacer el dia de hoy?"<<endl;
         cout<<"Registrar empleados.(ingrese 1)"<<endl;
         cout<<"Agregar nuevos empleados.(ingrese 2)"<<endl;
-        cout<<"Mostrar los empleados registrados.(ingrese 3"<<endl;
+        cout<<"Mostrar los empleados registrados.(ingrese 3)"<<endl;
         cout<<"Cambiar el número de celular de un empleado.(ingrese 4)"<<endl;
         cout<<"Despedir a un empleado.(ingrese 5)"<<endl;
         cout<<"Mostrar empleados que han sido despedidos.(ingrese 6)"<<endl;
-        cout<<"Ingrese la cantidad de clientes que va a registrar"<<endl;
-        cin>>totalclientes;
         cin>>opmenu;
 
         switch (opmenu)
@@ -344,14 +383,14 @@ main()
         //registro de empleados
         case 1:
             cout<<"case abierto"<<endl;
-            registro(empleados, totalclientes);
+            totalclientes = registro(empleados, totalclientes);
 
             break;
 
         case 2:
 
             cout<<"case 2 abierto"<<endl;
-            agregar(empleados, totalclientes);
+            totalclientes = agregar(empleados, totalclientes);
 
 
             break;
@@ -365,21 +404,21 @@ main()
 
         case 4:
             cout<<"case 4 abierto"<<endl;
+
             cambiarnumero(empleados, totalclientes);
 
             break;
 
         case 5:
             cout<<"case 5 abierto"<<endl;
-            despedirempleado(empleados,totalclientes);
-
+            contador = despedirempleado(empleados,totalclientes,despedidos,contador);
 
             break;
 
         case 6:
 
             cout<<"case 6 abierto"<<endl;
-
+            verdespedidos(empleados, totalclientes, despedidos,contador);
 
             break;
         }
@@ -388,4 +427,3 @@ main()
     }
     while (op=='s');
 }
-
