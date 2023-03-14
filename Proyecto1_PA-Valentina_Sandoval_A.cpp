@@ -381,31 +381,32 @@ void despedirempleado(empleado empleados[], int totalclientes)
 }
 
 //impresion de empleadios despedidos
-void verdespedidos()
+void verdespedidos(empleado empleados[])
 {
-    fstream f_despedidos;
+    fstream f_despedidos2;
     empleado empl_aux;
-    vector <empleado> a;
-    f_despedidos.open("Empleados_despedidos", ios :: in | ios :: binary | ios::out);
+    vector <empleado*> vec;
+    f_despedidos2.open("empleados_despedidos", ios :: in | ios :: binary | ios::out);
 
-    if (f_despedidos.is_open())
+    if (f_despedidos2.is_open())
     {
-        while(f_despedidos.read((char *)&empl_aux, sizeof(empleado)))
+        while(f_despedidos2.read(reinterpret_cast<char*>(&punteroempleado), sizeof(empleado)))
         {
-            a.push_back(empl_aux);
+            vec.push_back(punteroempleado);
         }
     }
 
-    for (int i = 0 ; i < a.size() ; i++)
+    for (int i = 0 ; i < vec.size() ; i++)
     {
-        cout << "Código: " << a[i].codigo << endl;
-        cout << "Nombre: " << a[i].nombres << endl;
-        cout << "Apellido: " << a[i].apellidos << endl;
-        cout << "Celular: " << a[i].celular << endl;
-        cout << endl;
+        cout<<"-----Empleado #"<<i+1<<"-----"<<endl;
+        cout<<"Código: "<<vec[i]->codigo<< endl;
+        cout<<"Nombre: "<<vec[i]->nombres <<endl;
+        cout<<"Apellidos: "<<vec[i]->apellidos << endl;
+        cout<<"Celular: "<<vec[i]->celular << endl;
+        cout<<endl;
     }
 
-    f_despedidos.close();
+    f_despedidos2.close();
 }
 
 main()
@@ -477,4 +478,5 @@ main()
     }
     while (op=='s');
     cout<<"vuelva pronto!!!"<<endl;
+    delete[] punteroempleado;
 }
