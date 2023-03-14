@@ -41,8 +41,8 @@ struct empleado
     string apellidos;
     long int celular;
 };
-
-vector <empleado> v_despedidos;
+vector <empleado*> v_despedidos;
+empleado* punteroempleado = new empleado();
 
 //funcion para registrar empleados (sobre escribe si existen registros)
 int registro(empleado empleados[], int totalclientes)
