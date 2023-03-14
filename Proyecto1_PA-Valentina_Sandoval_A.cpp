@@ -469,7 +469,7 @@ main()
 
         case 6:
             //imprimir empleadios despedidios
-            verdespedidos();
+            verdespedidos(empleados);
 
             break;
         }
