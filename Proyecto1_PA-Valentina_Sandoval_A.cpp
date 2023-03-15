@@ -27,11 +27,9 @@ Proyecto #1: Programacion avanzada
 #include<stdlib.h>
 #include <vector>
 #include <cstring>
-#include <string.h>
 
 using namespace std;
 int const MAX = 50;
-
 
 //creacion de estructura
 struct empleado
@@ -41,8 +39,6 @@ struct empleado
     string apellidos;
     long int celular;
 };
-vector <empleado*> v_despedidos;
-empleado* punteroempleado = new empleado();
 
 //funcion para registrar empleados (sobre escribe si existen registros)
 int registro(empleado empleados[], int totalclientes)
@@ -63,7 +59,7 @@ int registro(empleado empleados[], int totalclientes)
     //for para llenar el arreglo de tipo empleado
     for(int i=0; i<totalclientes; i++)
     {
-        cout<<"\n-----empleado #"<<i+1<<"-----\n"<<endl;
+        cout<<"\n-----Cliente #"<<i+1<<"-----\n"<<endl;
         cout<<"Código: ";
         cin>>empleados[i].codigo;
         cout<<"Nombre: ";
@@ -98,7 +94,7 @@ int registro(empleado empleados[], int totalclientes)
             //se imprimen a traves de un for
             for(int j=0; j<totalclientes; j++)
             {
-                cout<<"\n-----empleado #"<<j+1<<"-----\n"<<endl;
+                cout<<"\n-----Cliente #"<<j+1<<"-----\n"<<endl;
                 cout<<"Código: ";
                 cout<<empleados[j].codigo<<endl;
                 cout<<"Nombre: ";
@@ -138,7 +134,7 @@ int agregar(empleado empleados[], int totalclientes)
     for(int i=aux; i<totalclientes; i++)
     {
         //se ingresa la informacion del empleado
-        cout<<"\n-----empleado-----\n"<<endl;
+        cout<<"\n-----Cliente-----\n"<<endl;
         cout<<"Código: ";
         cin>>codigoagregar;
         cout<<"Nombre: ";
@@ -248,13 +244,13 @@ void cambiarnumero(empleado empleados[], int totalclientes)
     int codigo;
     bool encontrado = false;
     fstream archivo;
-    int i=0;
+    int t=0;
 
     // Pedir el código del empleado a modificar
 
     cout<<"Ingrese el código del empleado a modificar: ";
     cin>>codigo;
-    for(i=0; i<totalclientes; i++)
+    for(t=0; t<totalclientes; t++)
     {
         // Abrir archivo binario para lectura y escritura
         fstream archivo("empleados.bin", ios::in | ios::out | ios::binary);
@@ -268,145 +264,112 @@ void cambiarnumero(empleado empleados[], int totalclientes)
 
         while (!encontrado && archivo.read((char*)&empleados, sizeof(empleado)))
         {
-            if (empleados[i].codigo == codigo)
+            if (empleados[t].codigo == codigo)
             {
                 encontrado = true;
             }
         }
     }
-    // Si se encontró al empleado, pedir el nuevo número de teléfono y modificarlo en el archivo
-    if (encontrado==true)
-    {
-        cout<<"Ingrese el nuevo número de teléfono: ";
-        cin>>nuevoTelefono;
-        // Regresar al inicio del registro encontrado
-        archivo.seekp(-sizeof(empleado), ios::cur);
 
-        //escribir en el archivo binario
-        archivo.write((char*)&empleados, sizeof(empleado));
-        //se le asigna el nuevo valor de celular en el arreglo de tipo empleado
-        empleados[i].celular = nuevoTelefono;
-    }
-    archivo.read((char*)&empleados, sizeof(empleado));
+        // Si se encontró al empleado, pedir el nuevo número de teléfono y modificarlo en el archivo
+        if (encontrado==true)
+        {
+            cout<<"Ingrese el nuevo número de teléfono: ";
+            cin>>nuevoTelefono;
+            // Regresar al inicio del registro encontrado
+            archivo.seekp(-sizeof(empleado), ios::cur);
 
-    if (encontrado==false)
-    {
-        printf("No existe el empleado con dicho codigo\n");
-        archivo.close();
-    }
+            //escribir en el archivo binario
+            archivo.write((char*)&empleados, sizeof(empleado));
+            //se le asigna el nuevo valor de celular en el arreglo de tipo empleado
+            empleados[t-1].celular = nuevoTelefono;
+        }
+        archivo.read((char*)&empleados, sizeof(empleado));
 
-    cout<<endl;
-    cout << "---El teléfono del empleado ha sido modificado correctamente---" << endl;
+        if (encontrado==false)
+        {
+            printf("No existe el empleado con dicho codigo\n");
+            archivo.close();
+        }
+
+        cout << "------El número de teléfono del empleado ha sido modificado correctamente.-----" << endl;
 }
 
 //funcion para despedir empleados (envia la carta de despido)
-void despedirempleado(empleado empleados[], int totalclientes)
+void despedirempleado(empleado empleados[], int totalclientes, int i, int codigo, int contador, empleado empleadosfuera[])
 {
     ofstream file;
-    fstream bin;
-    fstream f_despedidos;
-    empleado empty = {0,"","",0};
+    string empleado;
     string titulo = "Carta_Despido_";
     string extension = ".txt";
-    int codigo;
-    int dia, mes, anio;
-    bool encontrado = false;
     string persona;
-    int aux;
-    cout<<"ingrese el codigo del empleado al que va a despedir"<<endl;
-    cin>>codigo;
-    for (int p=0; p<totalclientes;p++)
+    int des;
+    int dia, mes, anio;
+
+    //busqueda del codigo ingresado
+    if (empleados[i].codigo == codigo)
     {
-        if(empleados[p].codigo==codigo)
+        des=1;
+
+        //se le asigna a persona el nombre relaiconado al codigo encontrado
+        persona = empleados[i].nombres;
+        empleadosfuera[contador].codigo = empleados[i].codigo;
+        empleadosfuera[contador].nombres = empleados[i].nombres;
+        empleadosfuera[contador].apellidos = empleados[i].apellidos;
+        empleadosfuera[contador].celular = empleados[i].celular;
+
+        contador++;
+        //nombre del archivo
+        string newS = titulo + persona + extension;
+        //se pide la fecha de creacion de la carta
+        cout<<"introduzca la fecha de generacion de la carta de despido"<<endl;
+        cout<<"dia: ";
+        cin>>dia;
+        cout<<"mes: ";
+        cin>>mes;
+        cout<<"año: ";
+        cin>>anio;
+
+        //se abre y escribe la carta en el archivo
+        file.open(newS);
+        if(file.is_open())
         {
-            aux=empleados[p].codigo;
-            persona=empleados[p].nombres;
+            file<<"-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"<<endl;
+            file<<"                                                                                                                                     "<<dia<<"/"<<mes<<"/"<<anio<<endl;
+            file<<"Apreciado(a) "<<persona<<":"<<endl;
+            file<<"\t El motivo de esta carta es comunicarte que, el día de hoy, la empresa Minosaurios Tech Inc. ha\t"<<endl;
+            file<<"\t tomado la decisión de prescindir de tus servicios laborales como redactor web, puesto en el cual te has desempeñado desde el 3 de mayo de 2020.\t"<<endl;
+            file<<"\t El efecto del despido se llevará a cabo el día "<<dia<<" de mes " << mes<< " del presente.\t"<<endl;
+            file<<"\t Las razones de esta decisión se deben a los resultados de desempeño obtenidos en el periodo mayo-agosto de 2022.\t"<<endl;
+            file<<"\t De acuerdo a lo especificado en el contrato de trabajo, durante los primeros tres meses de la relación laboral, el colaborador debía de producir 10 piezas escritas con un alcance de 20.000 lectores.\t"<<endl;
+            file<<"\t No obstante, estos objetivos no fueron cumplidos en el periodo determinado y, de acuerdo con lo establecido en el artículo 52 del Estatuto de los Trabajadores, la empresa tiene la libertad de extinguir el contrato.\t"<<endl;
+            file<<"\t Conforme a lo acordado en el artículo 53 del Estatuto de los Trabajadores, la empresa pondrá a tu disposición la parte correspondiente de los 20 días de salario por cada año trabajado,\t"<<endl;
+            file<<"\t el cual asciende a una cantidad de €XXXX.XX.\t"<<endl;
+            file<<endl;
+            file<<endl;
+            file<<"Saludos cordiales,"<<endl;
+            file<<"Minosaurios Tech Inc."<<endl;
+            file<<"-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"<<endl;
         }
+        cout<<"Carta de despido creada"<<endl;
     }
-    bin.open("empleados.bin",ios::binary | ios::in | ios::out);
-    f_despedidos.open("empleados_despedidos", ios :: in | ios :: binary | ios::app);
-
-    if (bin.is_open())
-    {
-        while (bin.read(reinterpret_cast<char*>(&punteroempleado), sizeof(empleado)))
-        {
-            //busqueda del codigo ingresado
-            if (aux == codigo)
-            {
-                //se pide la fecha de creacion de la carta
-                cout<<"introduzca la fecha de generacion de la carta de despido"<<endl;
-                cout<<"dia: ";
-                cin>>dia;
-                cout<<"mes: ";
-                cin>>mes;
-                cout<<"año: ";
-                cin>>anio;
-                //nombre del archivo
-                string newS = titulo + persona + extension;
-                f_despedidos.write((char *)&punteroempleado, sizeof(empleado));
-                v_despedidos.push_back(punteroempleado);
-
-                //se abre y escribe la carta en el archivo
-                file.open(newS);
-                if(file.is_open())
-                {
-                    file<<"-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"<<endl;
-                    file<<"                                                                                                                                     "<<dia<<"/"<<mes<<"/"<<anio<<endl;
-                    file<<"Apreciado(a) "<<persona<<":"<<endl;
-                    file<<"\t El motivo de esta carta es comunicarte que, el día de hoy, la empresa Minosaurios Tech Inc. ha\t"<<endl;
-                    file<<"\t tomado la decisión de prescindir de tus servicios laborales como redactor web, puesto en el cual te has desempeñado desde el 3 de mayo de 2020.\t"<<endl;
-                    file<<"\t El efecto del despido se llevará a cabo el día "<<dia<<" de mes " << mes<< " del presente.\t"<<endl;
-                    file<<"\t Las razones de esta decisión se deben a los resultados de desempeño obtenidos en el periodo mayo-agosto de 2022.\t"<<endl;
-                    file<<"\t De acuerdo a lo especificado en el contrato de trabajo, durante los primeros tres meses de la relación laboral, el colaborador debía de producir 10 piezas escritas con un alcance de 20.000 lectores.\t"<<endl;
-                    file<<"\t No obstante, estos objetivos no fueron cumplidos en el periodo determinado y, de acuerdo con lo establecido en el artículo 52 del Estatuto de los Trabajadores, la empresa tiene la libertad de extinguir el contrato.\t"<<endl;
-                    file<<"\t Conforme a lo acordado en el artículo 53 del Estatuto de los Trabajadores, la empresa pondrá a tu disposición la parte correspondiente de los 20 días de salario por cada año trabajado,\t"<<endl;
-                    file<<"\t el cual asciende a una cantidad de €XXXX.XX.\t"<<endl;
-                    file<<endl;
-                    file<<endl;
-                    file<<"Saludos cordiales,"<<endl;
-                    file<<"Minosaurios Tech Inc."<<endl;
-                    file<<"-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"<<endl;
-
-                    bin.seekp(-sizeof(empleado), ios::cur);
-                    bin.write(reinterpret_cast<char*>(&empty),sizeof(empleado));
-                }
-            }
-        }
-    }
-    cout<<"Carta de despido creada"<<endl;
-    bin.close();
-    file.close();
-    f_despedidos.close();
-
+    if (des==0)
+        cout<<"no encontrado"<<endl;
 }
 
 //impresion de empleadios despedidos
-void verdespedidos(empleado empleados[])
+void verdespedidos(empleado empleadosfuera[],empleado *despedidos, int i )
 {
-    fstream f_despedidos2;
-    empleado empl_aux;
-    vector <empleado*> vec;
-    f_despedidos2.open("empleados_despedidos", ios :: in | ios :: binary | ios::out);
-
-    if (f_despedidos2.is_open())
+    cout<<"empleados despedidios: "<<endl;
+    for (int v=0; v<i-1; v++)
     {
-        while(f_despedidos2.read(reinterpret_cast<char*>(&punteroempleado), sizeof(empleado)))
-        {
-            vec.push_back(punteroempleado);
-        }
+        //impresion a traves de puntero
+        cout<<"- "<<"Empleado despedidio #"<<v+1<<"-"<<endl;
+        cout<<"Codigo: "<<despedidos[v].codigo<<endl;
+        cout<<"Nombres: "<<despedidos[v].nombres<<endl;
+        cout<<"Apellidos: "<<despedidos[v].apellidos<<endl;
+        cout<<"Telefono: "<<despedidos[v].celular<<endl;
     }
-
-    for (int i = 0 ; i < vec.size() ; i++)
-    {
-        cout<<"-----Empleado #"<<i+1<<"-----"<<endl;
-        cout<<"Código: "<<vec[i]->codigo<< endl;
-        cout<<"Nombre: "<<vec[i]->nombres <<endl;
-        cout<<"Apellidos: "<<vec[i]->apellidos << endl;
-        cout<<"Celular: "<<vec[i]->celular << endl;
-        cout<<endl;
-    }
-
-    f_despedidos2.close();
 }
 
 main()
@@ -416,10 +379,13 @@ main()
     char op;
     empleado empleados[MAX];
     int totalclientes;
-    string empleadosfuera[MAX];
+    empleado empleadosfuera[MAX];
+    empleado *despedidos;
+    despedidos = empleadosfuera;
+    int contador = 0;
+    int codigo;
     int j=0;
     string aux;
-    //vector <empleado> v_despedidos;
 
     cout<<"\n----------BIENVENIDO A MINOSAURIOS TECH----------\n"<<endl;
     //do while para poder volver al menu
@@ -463,13 +429,18 @@ main()
 
         case 5:
             // despedir empleado (carta de despido)
-
-            despedirempleado(empleados,totalclientes);
+            cout<<"ingrese el codigo del empleado al que va a despedir"<<endl;
+            cin>>codigo;
+            int i;
+            for(i=0; i<totalclientes; i++)
+            {
+               despedirempleado(empleados, totalclientes, i, codigo, contador, empleadosfuera);
+            }
             break;
 
         case 6:
             //imprimir empleadios despedidios
-            verdespedidos(empleados);
+            verdespedidos(empleadosfuera,despedidos, i );
 
             break;
         }
@@ -478,5 +449,5 @@ main()
     }
     while (op=='s');
     cout<<"vuelva pronto!!!"<<endl;
-    delete[] punteroempleado;
+    delete[] despedidos;
 }
