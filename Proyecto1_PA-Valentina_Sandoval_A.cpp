@@ -358,10 +358,10 @@ void despedirempleado(empleado empleados[], int totalclientes, int i, int codigo
 }
 
 //impresion de empleadios despedidos
-void verdespedidos(empleado empleadosfuera[],empleado *despedidos, int i )
+void verdespedidos(empleado empleadosfuera[],empleado *despedidos, int contador)
 {
     cout<<"empleados despedidios: "<<endl;
-    for (int v=0; v<i-1; v++)
+    for (int v=0; v<contador+1; v++)
     {
         //impresion a traves de puntero
         cout<<"- "<<"Empleado despedidio #"<<v+1<<"-"<<endl;
@@ -440,7 +440,7 @@ main()
 
         case 6:
             //imprimir empleadios despedidios
-            verdespedidos(empleadosfuera,despedidos, i );
+            verdespedidos(empleadosfuera,despedidos, contador);
 
             break;
         }
