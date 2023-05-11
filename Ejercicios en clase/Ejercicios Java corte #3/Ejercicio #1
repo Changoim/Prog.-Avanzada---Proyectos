@@ -1,0 +1,106 @@
+
+ class Persona {
+        //atributos
+        private String nombre;
+        private String apellidos;
+        private int edad;
+        //constructor
+        public Persona (String nombre, String apellidos, int edad) {
+            this.nombre = nombre;
+            this.apellidos = apellidos;
+            this.edad = edad;
+        }
+
+        //funciones
+        public String getnombre() { return nombre; }
+        public String getapellidos() { return apellidos; }
+        public int getedad() { return edad; }
+
+}
+
+ class profesor extends Persona{
+    //atributos propios de la subclase
+    private String idprofesor;
+
+    //constructor
+    public profesor (String nombre, String apellidos, int edad){
+        super (nombre, apellidos, edad);
+        idprofesor = "unknown";
+    }
+
+    //metodos propios de la subclase
+    public void setidprofesor (String idprofesor){
+        this.idprofesor = idprofesor;
+    }
+
+    public String getidprofesor(){
+        return idprofesor;}
+
+    public String tostring(){
+        return ""+getnombre()+""+getapellidos()+" - "+getedad()+" - "+getidprofesor();
+    }
+}
+
+ class alumno extends Persona{
+    //atributos propios de la subclase
+    private String idalumno;
+
+    //constructor
+    public alumno (String nombre, String apellidos, int edad){
+        super (nombre, apellidos, edad);
+        idalumno = "unknown";
+    }
+
+    //metodos propios de la subclase
+    public void setidalumno (String idalumno){
+        this.idalumno = idalumno;
+    }
+
+    public String getidalumno(){
+        return idalumno;}
+
+    public String tostring(){
+        return ""+getnombre()+""+getapellidos()+" - "+getedad()+" - "+getidalumno();
+    }
+}
+
+class practicante extends alumno {
+    //atributos propios de la subclase
+    private String idpracticante;
+
+    //constructor
+    public practicante(String nombre, String apellidos, int edad) {
+        super(nombre, apellidos, edad);
+        idpracticante = "unknown";
+    }
+
+    //metodos propios de la subclase
+    public void setidpracticante(String idpracticante) {
+        this.idpracticante = idpracticante;
+    }
+
+    public String getidpracticante() {
+        return idpracticante;
+    }
+
+    public String tostring() {
+        return "" + getnombre() + "" + getapellidos() + " - " + getedad() + " - " + getidpracticante();
+    }
+}
+
+public class Main {
+        public static void main (String[] args){
+            profesor profesor1 = new profesor ("profesor", "mendoza cuba", 33);
+
+            System.out.println(profesor1.tostring());
+
+            alumno alumno1 = new alumno ("alumno", "pardo manila", 15);
+            alumno1.setidalumno("alumno1234");
+            System.out.println(alumno1.tostring());
+
+            practicante practicante1 = new practicante ("practicante","torres nilo", 19);
+            practicante1.setidpracticante("practicante12342");
+            System.out.println(practicante1.tostring());
+
+        }
+    }
