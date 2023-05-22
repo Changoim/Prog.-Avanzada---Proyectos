@@ -1,0 +1,160 @@
+// Taller Bono (final) - Valentina Sandoval A.
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+abstract class ProductoElectronico {
+    private String nombre;
+    private double precio;
+    private int garantia;
+
+    public ProductoElectronico(String nombre, double precio, int garantia) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.garantia = garantia;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public int getGarantia() {
+        return garantia;
+    }
+
+    public abstract void cargar(int cargaInicial);
+
+    public void mostrarInformacion() {
+        System.out.println("Nombre: " + nombre);
+        System.out.println("Precio: $" + precio);
+        System.out.println("Garantía: " + garantia + " meses");
+    }
+}
+
+class Celular extends ProductoElectronico {
+    private String marca;
+
+    public Celular(String nombre, double precio, int garantia, String marca) {
+        super(nombre, precio, garantia);
+        this.marca = marca;
+    }
+
+    @Override
+    public void cargar(int cargaInicial) {
+        System.out.println("Cargando el celular " + getNombre() + " de la marca " + marca);
+        System.out.println("Tiempo estimado de carga: " + (cargaInicial * 2) + " minutos");
+    }
+
+    public void hacerLlamada(String numero) {
+        System.out.println("Realizando una llamada desde el celular " + getNombre() + " al número " + numero);
+    }
+}
+
+class Computadora extends ProductoElectronico {
+    private String sistemaOperativo;
+
+    public Computadora(String nombre, double precio, int garantia, String sistemaOperativo) {
+        super(nombre, precio, garantia);
+        this.sistemaOperativo = sistemaOperativo;
+    }
+
+    @Override
+    public void cargar(int cargaInicial) {
+        System.out.println("Cargando la computadora " + getNombre() + " con sistema operativo " + sistemaOperativo);
+        System.out.println("Tiempo estimado de carga: " + (cargaInicial * 3) + " minutos");
+    }
+
+    public void ejecutarPrograma(String programa) {
+        System.out.println("Ejecutando el programa '" + programa + "' en la computadora " + getNombre());
+    }
+}
+
+public class TiendaElectronica {
+    public static void main(String[] args) {
+        ArrayList<ProductoElectronico> productos = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        int opcion;
+
+        do {
+            System.out.println("----- Menú -----");
+            System.out.println("1. Crear un celular");
+            System.out.println("2. Crear una computadora");
+            System.out.println("3. Mostrar productos");
+            System.out.println("4. Salir");
+            System.out.print("Ingrese una opción: ");
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Limpiar el buffer del scanner
+
+            switch (opcion) {
+                case 1:
+                    System.out.print("Ingrese el nombre del celular: ");
+                    String nombreCelular = scanner.nextLine();
+                    System.out.print("Ingrese el precio del celular: ");
+                    double precioCelular = scanner.nextDouble();
+                    System.out.print("Ingrese la garantía del celular (en meses): ");
+                    int garantiaCelular = scanner.nextInt();
+                    scanner.nextLine(); // Limpiar el buffer del scanner
+                    System.out.print("Ingrese la marca del celular: ");
+                    String marcaCelular = scanner.nextLine();
+
+                    Celular celular = new Celular(nombreCelular, precioCelular, garantiaCelular, marcaCelular);
+                    productos.add(celular);
+                    System.out.println("Celular creado exitosamente.");
+                    break;
+
+                case 2:
+                    System.out.print("Ingrese el nombre de la computadora: ");
+                    String nombreComputadora = scanner.nextLine();
+                    System.out.print("Ingrese el precio de la computadora: ");
+                    double precioComputadora = scanner.nextDouble();
+                    System.out.print("Ingrese la garantía de la computadora (en meses): ");
+                    int garantiaComputadora = scanner.nextInt();
+                    scanner.nextLine(); // Limpiar el buffer del scanner
+                    System.out.print("Ingrese el sistema operativo de la computadora: ");
+                    String sistemaOperativo = scanner.nextLine();
+
+                    Computadora computadora = new Computadora(nombreComputadora, precioComputadora,
+                            garantiaComputadora, sistemaOperativo);
+                    productos.add(computadora);
+                    System.out.println("Computadora creada exitosamente.");
+                    break;
+
+                case 3:
+                    mostrarProductos(productos);
+                    break;
+
+                case 4:
+                    System.out.println("¡Hasta luego!");
+                    break;
+
+                default:
+                    System.out.println("Opción inválida. Por favor, ingrese una opción válida.");
+            }
+
+            System.out.println();
+        } while (opcion != 4);
+    }
+
+    public static void mostrarProductos(ArrayList<ProductoElectronico> productos) {
+        System.out.println("----- Productos -----");
+        for (ProductoElectronico producto : productos) {
+            producto.mostrarInformacion();
+            producto.cargar(10); // Ejemplo de carga inicial de 10 minutos
+
+            if (producto instanceof Celular) {
+                Celular celular = (Celular) producto;
+                celular.hacerLlamada("123456789"); // Ejemplo de hacer una llamada en el celular
+            } else if (producto instanceof Computadora) {
+                Computadora computadora = (Computadora) producto;
+                computadora.ejecutarPrograma("MiPrograma"); // Ejemplo de ejecutar un programa en la computadora
+            }
+
+            System.out.println("--------------------");
+        }
+    }
+}
+
