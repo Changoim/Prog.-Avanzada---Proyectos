@@ -1,34 +1,27 @@
-# Juego de Tres en Raya
+<!--
+- Valentina Sandoval A.
+- Juego: Tres en Raya
+-->
 
-El siguiente código implementa el juego clásico de Tres en Raya, también conocido como Tic-Tac-Toe. El juego se desarrolla en una cuadrícula de 3x3, donde dos jugadores alternan turnos para marcar casillas con sus respectivos símbolos ('X' y 'O'). El objetivo del juego es lograr una línea horizontal, vertical o diagonal de tres símbolos iguales antes que el oponente.
+# Juego: Tres en Raya
 
-El código está escrito en Java y utiliza la clase `Scanner` para leer la entrada del usuario desde la consola. A continuación, se proporciona una explicación de las diferentes partes del código:
+El código proporcionado implementa el juego clásico de Tres en Raya (también conocido como Tic-Tac-Toe) en Java. Aquí está la descripción de cómo funciona y las mejoras realizadas:
 
-## Clase `TresEnRaya`
+## Funcionamiento del código
 
-### Atributos
-- `tablero`: Una matriz bidimensional de caracteres que representa el estado actual del tablero de juego.
-- `jugadorActual`: Un carácter ('X' o 'O') que indica el símbolo del jugador actual.
+1. Al ejecutar el programa, se crea un objeto `TresEnRaya` y se llama al método `jugar()` para iniciar el juego.
+2. Se muestra un mensaje de bienvenida y se le pregunta al jugador si desea jugar contra la computadora.
+3. Dependiendo de la respuesta del jugador, se establece el modo de juego (`modoJuegoContraComputadora`) como `true` o `false`.
+4. El juego se lleva a cabo en un bucle infinito. En cada iteración del bucle, se muestra el tablero actual y se solicita el movimiento al jugador actual.
+5. Si el modo de juego es contra la computadora y es el turno del jugador O, se llama al método `hacerMovimientoComputadora()` para realizar un movimiento aleatorio.
+6. Si el modo de juego es de dos jugadores o es el turno del jugador X, se solicita al jugador que ingrese la fila y columna del movimiento a realizar.
+7. Se verifica si el movimiento es válido y se realiza en el tablero utilizando el método `realizarMovimiento()`.
+8. Después de cada movimiento, se verifica si hay un ganador utilizando el método `hayGanador()`. Si hay un ganador, se muestra el tablero y se muestra un mensaje de felicitación.
+9. Si no hay ganador, se verifica si hay un empate utilizando el método `hayEmpate()`. Si hay empate, se muestra el tablero y se muestra un mensaje de empate.
+10. En cada iteración, se cambia al siguiente jugador utilizando el método `cambiarJugador()`.
+11. El juego continúa hasta que haya un ganador o un empate.
 
-### Constructor
-- `TresEnRaya()`: Inicializa el tablero como una matriz de 3x3 y establece el jugador actual como 'X'. Luego, llama al método `inicializarTablero()` para establecer todas las casillas del tablero como vacías ('-').
+## Mejoras realizadas
 
-### Métodos
-
-- `jugar()`: Inicia el juego y contiene el bucle principal del juego. Muestra el tablero, solicita al jugador actual que ingrese la fila y columna para realizar su movimiento, valida el movimiento y actualiza el estado del tablero. Luego, cambia al siguiente jugador y repite el proceso hasta que haya un ganador o empate. Al finalizar el juego, muestra el tablero final y el resultado.
-
-- `inicializarTablero()`: Establece todas las casillas del tablero como vacías ('-').
-
-- `mostrarTablero()`: Muestra el estado actual del tablero en la consola.
-
-- `validarMovimiento(int fila, int columna)`: Verifica si el movimiento realizado por el jugador actual es válido. El movimiento es válido si la casilla está dentro de los límites del tablero y está vacía ('-').
-
-- `hayGanador()`: Comprueba si hay un ganador en el juego. Verifica todas las posibles combinaciones ganadoras en filas, columnas y diagonales.
-
-- `hayEmpate()`: Verifica si el juego ha terminado en empate. Comprueba si todas las casillas del tablero están ocupadas.
-
-- `main(String[] args)`: El punto de entrada del programa. Crea una instancia de la clase `TresEnRaya` y llama al método `jugar()` para iniciar el juego.
-
-El juego de Tres en Raya se ejecuta en un bucle donde los jugadores alternan turnos hasta que haya un ganador o empate. Cada jugador ingresa las coordenadas de la casilla en la que desea marcar ('X' o 'O'). Al finalizar el juego, se muestra el estado final del tablero y el resultado (ganador o empate).
-
-Este código es una implementación básica del juego de Tres en Raya en Java. Puede servir como punto de partida para agregar características adicionales o mejoras al juego.
+1. Se han agregado constantes (`VACIO`, `JUGADOR_X`, `JUGADOR_O`) para representar los valores utilizados en el juego. Esto mejora la legibilidad del código y facilita la modificación de los valores en un solo lugar.
+2. Se ha agregado la opción de jugar contra la computadora. Al inicio del juego, se le pregunta al jugador si desea jugar contra la computadora. Si selecciona "S" (sí), se activa el modo de juego contra la computadora. Durante el turno del jugador O, la computadora realiza un movimiento aleatorio utilizando el método `hacerMovimientoComputadora()`. Esto brinda la opción de jugar solo o contra la computadora.
