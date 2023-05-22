@@ -1,0 +1,157 @@
+/*
+* Valentina Sandoval A.
+* Juego: tres en raya
+* Mejoras realizadas: 
+* 1. Se han agregado constantes para los valores utilizados en el juego (vacío, jugador X y jugador O).
+* 2. Se ha agregado la opción de jugar contra la computadora. Se solicita al jugador si desea jugar contra 
+* la computadora y se hace un movimiento aleatorio para el jugador O.
+*/
+
+import java.util.Random;
+import java.util.Scanner;
+
+public class TresEnRaya {
+    private static final char VACIO = '-';
+    private static final char JUGADOR_X = 'X';
+    private static final char JUGADOR_O = 'O';
+
+    private char[][] tablero;
+    private char jugadorActual;
+    private boolean modoJuegoContraComputadora;
+
+    public TresEnRaya() {
+        tablero = new char[3][3];  // Crear el tablero de juego
+        jugadorActual = JUGADOR_X;  // Comenzar con el jugador X
+        modoJuegoContraComputadora = false;  // Modo de juego predeterminado: 2 jugadores
+        inicializarTablero();  // Inicializar el tablero con celdas vacías
+    }
+
+    public void jugar() {
+        Scanner scanner = new Scanner(System.in);  // Crear un objeto Scanner para leer la entrada del usuario
+
+        System.out.println("¡Bienvenido al juego de Tres en Raya!");
+
+        System.out.print("¿Deseas jugar contra la computadora? (S/N): ");
+        String respuesta = scanner.nextLine().trim().toUpperCase();
+        modoJuegoContraComputadora = respuesta.equals("S");  // Establecer el modo de juego según la respuesta del usuario
+
+        while (true) {
+            mostrarTablero();
+
+            System.out.println("Turno del jugador " + jugadorActual);
+
+            if (modoJuegoContraComputadora && jugadorActual == JUGADOR_O) {
+                hacerMovimientoComputadora();  // Hacer un movimiento aleatorio para el jugador O (computadora)
+            } else {
+                boolean movimientoValido = false;
+                while (!movimientoValido) {
+                    System.out.print("Ingrese la fila (0-2): ");
+                    int fila = scanner.nextInt();
+                    System.out.print("Ingrese la columna (0-2): ");
+                    int columna = scanner.nextInt();
+
+                    movimientoValido = realizarMovimiento(fila, columna);  // Realizar el movimiento ingresado por el jugador
+                    if (!movimientoValido) {
+                        System.out.println("Movimiento inválido. Intente nuevamente.");
+                    }
+                }
+            }
+
+            if (hayGanador()) {
+                mostrarTablero();
+                System.out.println("¡Ha ganado el jugador " + jugadorActual + "!");
+                break;
+            } else if (hayEmpate()) {
+                mostrarTablero();
+                System.out.println("¡Empate! No hay ganador.");
+                break;
+            }
+
+            cambiarJugador();  // Cambiar al siguiente jugador
+        }
+
+        scanner.close();  // Cerrar el objeto Scanner
+    }
+
+    private void inicializarTablero() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                tablero[i][j] = VACIO;  // Establecer todas las celdas del tablero como vacías
+            }
+        }
+    }
+
+    private void mostrarTablero() {
+        System.out.println("Tablero:");
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.print(tablero[i][j] + " ");  // Mostrar el contenido de cada celda del tablero
+            }
+            System.out.println();
+        }
+    }
+
+    private boolean realizarMovimiento(int fila, int columna) {
+        if (fila >= 0 && fila < 3 && columna >= 0 && columna < 3 && tablero[fila][columna] == VACIO) {
+            tablero[fila][columna] = jugadorActual;  // Realizar el movimiento si la celda está vacía y dentro de los límites del tablero
+            return true;
+        }
+        return false;
+    }
+
+    private void cambiarJugador() {
+        jugadorActual = (jugadorActual == JUGADOR_X) ? JUGADOR_O : JUGADOR_X;  // Cambiar al siguiente jugador (alternar entre X y O)
+    }
+
+    private boolean hayGanador() {
+        for (int i = 0; i < 3; i++) {
+            if (tablero[i][0] != VACIO && tablero[i][0] == tablero[i][1] && tablero[i][0] == tablero[i][2]) {
+                return true;  // Comprobar si hay un ganador en las filas
+            }
+        }
+
+        for (int j = 0; j < 3; j++) {
+            if (tablero[0][j] != VACIO && tablero[0][j] == tablero[1][j] && tablero[0][j] == tablero[2][j]) {
+                return true;  // Comprobar si hay un ganador en las columnas
+            }
+        }
+
+        if (tablero[0][0] != VACIO && tablero[0][0] == tablero[1][1] && tablero[0][0] == tablero[2][2]) {
+            return true;  // Comprobar si hay un ganador en la diagonal principal
+        }
+        if (tablero[0][2] != VACIO && tablero[0][2] == tablero[1][1] && tablero[0][2] == tablero[2][0]) {
+            return true;  // Comprobar si hay un ganador en la diagonal secundaria
+        }
+
+        return false;  // No hay un ganador
+    }
+
+    private boolean hayEmpate() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (tablero[i][j] == VACIO) {
+                    return false;  // Si hay al menos una celda vacía, no hay empate
+                }
+            }
+        }
+        return true;  // Todas las celdas están ocupadas, hay empate
+    }
+
+    private void hacerMovimientoComputadora() {
+        Random random = new Random();
+
+        while (true) {
+            int fila = random.nextInt(3);  // Generar una fila aleatoria
+            int columna = random.nextInt(3);  // Generar una columna aleatoria
+
+            if (realizarMovimiento(fila, columna)) {
+                break;  // Realizar el movimiento si la celda está vacía
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        TresEnRaya juego = new TresEnRaya();
+        juego.jugar();  // Iniciar el juego
+    }
+}
